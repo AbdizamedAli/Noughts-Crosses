@@ -1,4 +1,4 @@
-from Game import GameClass
+from game import GameClass
 from learn import Learn
 
 def main():
