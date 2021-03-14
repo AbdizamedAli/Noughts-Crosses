@@ -1,11 +1,6 @@
-from game import GameClass
-from learn import Learn
-
+import learn as learn
 def main():
-    Game = GameClass()
-    Svs = Learn(100000)
-    Game.Play(Svs)
-
+    learn.Play(100000,10)
 
 if __name__ == "__main__":
     main()

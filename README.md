@@ -44,24 +44,13 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-This is an implementation of the game noughts and crosses using pygame with an AI that implements a Bellman function to determine the best move. The program may take awhile to load up as it will begin its learning iterations you can change this in the main function it is set to 100,000 currently
-
-
-
+This is an implementation of the game noughts and crosses with an AI that implements a Q-function to update the states of the game
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
 To get a local copy up and running follow these simple steps.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* pygame
-  ```sh
-  pip3 install pygame
-  ```
 
 ### Installation
 

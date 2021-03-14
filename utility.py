@@ -3,7 +3,6 @@ import random
 def ListToString(InputList):
     return ''.join(InputList)
 
-
 # Given a list of strings, this function will return a list of indices in which the elements which only contain a space
 # i.e: [' ','B','C',' '] -> [0,3]
 def GetEmptyCells(InputList):
@@ -19,9 +18,3 @@ def GetRandomElement(InputList):
 
 def MaxIndices(InputList):
     return  [ i for i in range(len(InputList)) if InputList[i] == max(InputList) ]
-
-def GetKey(dicts,val):
-    for key, value in dicts.items():
-        if val == value:
-            return key
-

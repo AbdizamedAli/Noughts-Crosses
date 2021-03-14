@@ -1,4 +1,4 @@
-import utility as s1
+import utility as util
 
 class TicTacToe():
     # Constructor function
@@ -6,14 +6,14 @@ class TicTacToe():
         # Properties
         self.Board = [' ',' ',' ',' ',' ',' ',' ',' ',' ']
         self.EmptyCells = [0,1,2,3,4,5,6,7,8]
-        self.Turn = 'O'
+        self.Turn = 'X'
         self.Winner = None
         self.StatesX = []
         self.StatesO = []
 
     def RandomTurn(self):
         player = self.Turn
-        emptyCell = s1.GetRandomElement(s1.GetEmptyCells(self.Board))
+        emptyCell = util.GetRandomElement(util.GetEmptyCells(self.Board))
         self.Board[emptyCell] = player 
     
     def BestTurn(self, StateValues):
@@ -21,26 +21,29 @@ class TicTacToe():
         for Index in self.EmptyCells:
             Board = self.Board.copy()
             Board[Index] = self.Turn
-            stringBoard = s1.ListToString(Board)
+            stringBoard = util.ListToString(Board)
             corValue = StateValues.get(stringBoard,0)
             Values.append(corValue)
-        Indices = s1.MaxIndices(Values)
-        Index = s1.GetRandomElement(Indices)
+        Indices = util.MaxIndices(Values)
+        Index = util.GetRandomElement(Indices)
         Position = self.EmptyCells[Index]
         self.Board[Position] = self.Turn
-
-    def HumanVsComputer(self,Game, stateValues,PrintGame):
-        if PrintGame :
+    
+    def HumanVsComputer(self, stateValues,PrintGame):
+        while self.Winner == None:
+            if PrintGame :
+                print(self)
+                print(self.Turn + "'s turn:")
+            if self.Turn == 'X':
+                self.HumanTurn()
+            elif self.Turn == 'O':
+                self.BestTurn(stateValues)
+            self.Update()
+        if PrintGame:
             print(self)
-            print(self.Turn + "'s turn:")
-        if self.Turn == 'X':
-            self.GetHumanTurn(Game)
-        elif self.Turn == 'O':
-            self.BestTurn(stateValues)
-        self.Update()
-
+            print(self.Winner + " wins!")
         return
-
+    
     def LearningTurn(self, stateValues):
         import random
         r = random.uniform(0,1)
@@ -67,24 +70,48 @@ class TicTacToe():
                 print(self.Winner," wins!")
         return
 
-    def GetHumanTurn(self,Game):        
-        self.Board[Game.Move] = self.Turn
-
-           
+    def HumanTurn(self):
+        # Ask the user (you) to input a number/position
+        print("Please input a number from 0-8 corresponding to the position in which you wish to play:")
+        Input = input()
+        # If the input is not a number between 0 and 8 ask again
+        if (len(Input) != 1) or (ord(Input) < 48) or (ord(Input) > 56):
+            print("Incorrect input. Please try again.")
+            self.HumanTurn()
+            return
+        # Turn the input from a string into an integer
+        Position = int(Input)
+        if  Position not in self.EmptyCells:
+            print("Cell is already filled")
+            self.HumanTurn()
+        self.Board[Position] = self.Turn
+  
     def Update(self):
-        self.EmptyCells = s1.GetEmptyCells(self.Board)
+        self.EmptyCells = util.GetEmptyCells(self.Board)
         player = self.Turn
         if player == 'X':
-            self.StatesX.append(s1.ListToString(self.Board))
+            self.StatesX.append(util.ListToString(self.Board))
             self.Turn = 'O'
         elif player == 'O':
-            self.StatesO.append(s1.ListToString(self.Board))
+            self.StatesO.append(util.ListToString(self.Board))
             self.Turn = 'X'
         else:
             raise Exception("Invalid Turn")
         self.IsGameOver()
         return
 
+    def HumanVsRandom(self):
+        while self.Winner == None:
+            print(self)
+            print(self.Turn + "'s turn:")
+            if self.Turn == 'X':
+                self.HumanTurn()
+            elif self.Turn == 'O':
+                self.RandomTurn()
+            self.Update()
+        print(self)
+        print(self.Winner + " wins!")
+        return
 
     # Function which prints out the board
     # Call this function using 'print(self)'
@@ -94,7 +121,7 @@ class TicTacToe():
         print("╔═══╦═══╦═══╗")
         # Printing the first row
         print('║', Board[0], '║', Board[1], '║', Board[2], '║')
-        print("╠═══╬═══╬═══╣")
+        print("╠═══╬═══╬═══╣5")
         # Second row
         print('║', Board[3], '║', Board[4], '║', Board[5], '║')
         print("╠═══╬═══╬═══╣")
@@ -130,32 +157,3 @@ class TicTacToe():
         # Check to see if the board is full
         elif self.EmptyCells == []:
             self.Winner = 'Tie'
-
-
-#######################
-# TESTING
-# - Uncomment one at a time (and recomment them when you move on to the next test)
-#######################
-
-# Game = TicTacToe()
-# print(Game)
-
-# # Task 1:
-# Game.RandomTurn()
-# print(Game)
-
-# # Task 2:
-# Game.HumanTurn()
-# print(Game)
-
-# Task 3:
-# print("BEFORE")
-# print("Board: ", Game.Board, "\nEmpty Cells: ", Game.EmptyCells, "\nTurn: ", Game.Turn, "\nWinner: ", Game.Winner, "\nStatesX: ", Game.StatesX, "\nStatesO: ", Game.StatesO)
-# Game.RandomTurn()
-# Game.Update()
-# print("\nAFTER")
-# print("Board: ", Game.Board, "\nEmpty Cells: ", Game.EmptyCells, "\nTurn: ", Game.Turn, "\nWinner: ", Game.Winner, "\nStatesX: ", Game.StatesX, "\nStatesO: ", Game.StatesO)
-
-# # Task4:
-# Game = TicTacToe()
-# Game.HumanVsRandom()

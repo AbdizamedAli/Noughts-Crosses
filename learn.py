@@ -1,4 +1,4 @@
-import move as ox
+import oxo as ox
 
 def Learn(n):
     stateX = {}
@@ -30,3 +30,10 @@ def UpdateSVs(StateValues, States, Score):
         StateValues[State] = Value
         VSt1 = Value
     return StateValues
+
+
+def Play(TrainingN, TestingN):
+    SVs = Learn(TrainingN)
+    for i in range(TestingN):
+        Game = ox.TicTacToe()
+        Game.HumanVsComputer(SVs,PrintGame=True)
